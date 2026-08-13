@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Natural language to SQL chat agent: multi-provider LLM tool use, SELECT-only guardrails, SSE streaming"
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "MIT" }
+license = { text = "AGPL-3.0-or-later" }
 authors = [{ name = "Martin Blomqvist", email = "cm.blomqvist@gmail.com" }]
 keywords = ["llm", "sql", "agent", "fastapi", "sse", "text-to-sql"]
 

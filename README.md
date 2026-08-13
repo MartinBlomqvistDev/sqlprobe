@@ -304,4 +304,8 @@ Python 3.12 or newer. One provider API key, or Ollama for a fully local run.
 
 ## Licence
 
-MIT. See `LICENSE`.
+AGPL-3.0-or-later. See `LICENSE`.
+
+Running a modified version as a network service means publishing your
+modifications. If that does not suit your use, the copyright is held solely by
+Martin Blomqvist and a commercial licence can be arranged: cm.blomqvist@gmail.com.
