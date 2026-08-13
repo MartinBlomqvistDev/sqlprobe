@@ -42,6 +42,23 @@ Cloud backends need the matching key in `.env`. Ollama needs nothing and costs
 nothing, which makes it the cheapest way to check the harness works before
 spending money.
 
+### What a cloud sweep costs
+
+The full three sets at three repeats is 456 model calls: 180 adversarial at one
+tool iteration, 156 identity and 120 capability at two. The fixed prefix is
+about 2,200 tokens of system prompt and tool schemas per call, so the run is
+roughly 1.05M input tokens and, depending on how much the model thinks, on the
+order of 230k output tokens.
+
+At Claude Opus 5 rates that is about **$11 without prompt caching and about $7
+with it**. Treat both as estimates to within a factor of two on the output side,
+because adaptive thinking length is not predictable in advance.
+
+Groq and Gemini both have free tiers and are already supported, so a
+multi-backend comparison can be run at no cost by setting one of those keys.
+Rate limits will pace the sweep; raise `--timeout` and expect it to take longer
+rather than to fail.
+
 ## The prompt sets
 
 **Adversarial** (60 prompts, `adversarial_questions.py`) across eight
