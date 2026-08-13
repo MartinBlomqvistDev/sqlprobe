@@ -190,6 +190,7 @@ def run_backend(
     limit: int | None,
     per_category: int | None,
     repeats: int,
+    sleep_s: float,
     timeout: float,
     env_extra: dict[str, str],
     directory_names: frozenset[str],
@@ -243,6 +244,8 @@ def run_backend(
                         "deflected": "deflected",
                         "error": "ERROR",
                     }.get(verdict.outcome, verdict.outcome)
+                    if sleep_s > 0:
+                        time.sleep(sleep_s)
                     suffix = f" (run {repeat + 1}/{repeats})" if repeats > 1 else ""
                     print(f"    [{number:3d}] {flag:<11} {category:<12} "
                           f"{prompt[:44]}{suffix}")
@@ -272,6 +275,11 @@ def main(argv: list[str] | None = None) -> int:
                         help="Sample N prompts from each category, keeping the set balanced. "
                              "Preferred over --limit, which takes the first N and so "
                              "over-weights whichever category comes first.")
+    parser.add_argument("--sleep", type=float, default=0.0,
+                        help="Seconds to wait between calls. Free tiers rate-limit per "
+                             "minute, and the provider clients are configured not to "
+                             "retry silently, so pacing here is what keeps a long sweep "
+                             "from dying partway. Try 2 on a free tier.")
     parser.add_argument("--repeats", type=int, default=1,
                         help="Run every prompt N times. Model output is sampled, so a "
                              "single observation per prompt cannot separate a habit from "
@@ -312,7 +320,7 @@ def main(argv: list[str] | None = None) -> int:
     started = datetime.now()
     results = [
         run_backend(provider, model, set_names, args.limit, args.per_category,
-                    args.repeats, args.timeout, env_extra, directory_names)
+                    args.repeats, args.sleep, args.timeout, env_extra, directory_names)
         for provider, model in backends
     ]
 
@@ -327,6 +335,7 @@ def main(argv: list[str] | None = None) -> int:
                 "per_category": args.per_category,
                 "max_tool_iterations": args.max_iterations,
                 "repeats": args.repeats,
+                "sleep_s": args.sleep,
                 "backends": [r["backend"] for r in results],
                 "results": results,
             },
