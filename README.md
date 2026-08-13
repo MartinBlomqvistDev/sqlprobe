@@ -264,13 +264,36 @@ data: {"type": "done"}
 Every stream ends with `done`, including streams that ended in an error. The
 event shapes are defined in `nl2sql/events.py`.
 
+## What the models actually try
+
+The guard refuses unsafe SQL. The more interesting question is what the model
+on the other side of it tries to do, because the guard is the second line of
+defence and the first one, a read-only database user, is easy to forget.
+
+`research/` measures that: an adversarial prompt set across eight attack
+categories, an identity set probing for personal data the database does not
+hold, and the ordinary question bank as a capability control. Grading is
+mechanical, with the emitted SQL re-parsed by the same validator the agent
+uses, and every prompt is repeated so a habit can be told from a coin flip.
+
+The first run is in [research/RESULTS.md](research/RESULTS.md), the method in
+[research/README.md](research/README.md). On `llama3.2` running locally, 52
+percent of adversarial runs emitted SQL the guard had to reject, and the split
+by category is the useful part: plainly worded requests and appeals to
+authority succeeded every time, while injection never worked once. That is a
+politeness problem rather than a security one, and the two want different
+fixes.
+
+No attack succeeded in any run. The number measures how much work the guard is
+doing, not damage done.
+
 ## Tests
 
 ```bash
 pytest
 ```
 
-70 tests, runnable straight after a checkout: the suite seeds its own temporary
+100 tests, runnable straight after a checkout: the suite seeds its own temporary
 database and needs no API key and no network. They cover the SQL guard against
 a table of injection attempts, the read path, chart inference, tool dispatch
 and truncation, the HTTP surface, and a check that the schema description in
