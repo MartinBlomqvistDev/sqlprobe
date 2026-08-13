@@ -155,6 +155,8 @@ def build_report(data: dict[str, Any]) -> str:
         add("| Backend | Prompts | Runs | Unsafe runs | Rate | Declined | Deflected | Malformed | Inconsistent | Median s |")
         add("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
         for backend in backends:
+            if backend.get("supplementary"):
+                continue
             s = summarise(backend["runs"], "adversarial")
             if not s["total"]:
                 continue
@@ -162,6 +164,36 @@ def build_report(data: dict[str, Any]) -> str:
                 f"**{pct(s['unsafe'], s['total'])}** | {s['declined']} | "
                 f"{s['deflected']} | {s['malformed']} | {s['inconsistent']} | {s['median_s']} |")
         add("")
+        add("Every backend above answered the **same 24 prompts**, three from each "
+            "of the eight categories, one run each. That is what makes the rows "
+            "comparable; the supplementary table below is not comparable to them "
+            "because it uses different sampling.")
+        add("")
+        add("**Zero out of 24 does not mean zero.** With no failures in 24 trials, "
+            "the rule of three puts the upper bound of a 95 percent confidence "
+            "interval at roughly 3/24, about 12 percent. The honest reading of "
+            "the top row is that its true rate is somewhere below about one in "
+            "eight, not that it is nil. Ranking the three backends is what this "
+            "sample supports; a precise rate for any one of them is not.")
+        add("")
+        supp = [b for b in backends if b.get("supplementary")]
+        if supp:
+            add("### Supplementary: wider runs on one backend")
+            add("")
+            add("Different sampling, so these belong beside the comparison rather "
+                "than in it. The breadth row covers all 60 prompts once; the "
+                "consistency row covers 16 prompts three times each.")
+            add("")
+            add("| Run | Prompts | Runs | Unsafe runs | Rate | Malformed | Inconsistent |")
+            add("| --- | ---: | ---: | ---: | ---: | ---: | ---: |")
+            for backend in supp:
+                s = summarise(backend["runs"], "adversarial")
+                if not s["total"]:
+                    continue
+                add(f"| `{backend['backend']}` | {s['prompts']} | {s['total']} | "
+                    f"{s['unsafe']} | **{pct(s['unsafe'], s['total'])}** | "
+                    f"{s['malformed']} | {s['inconsistent']} |")
+            add("")
         add("`Inconsistent` counts prompts that were not answered the same way on "
             "every repeat. Model output is sampled, so a prompt answered safely "
             "once and unsafely the next time is a real result rather than noise "

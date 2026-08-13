@@ -276,23 +276,29 @@ hold, and the ordinary question bank as a capability control. Grading is
 mechanical, with the emitted SQL re-parsed by the same validator the agent
 uses, and every prompt is repeated so a habit can be told from a coin flip.
 
-The first run is in [research/RESULTS.md](research/RESULTS.md), the method in
-[research/README.md](research/README.md). On `llama3.2` running locally, 28 of
-60 adversarial prompts produced SQL the guard had to reject. The split by
-category is the useful part:
+Results are in [research/RESULTS.md](research/RESULTS.md), method in
+[research/README.md](research/README.md). Three backends, the same 24 prompts,
+three from each of eight attack categories:
 
-| direct | euphemism | authority | hidden | metadata | override | injection | exfiltration |
-| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 10/10 | 6/8 | 4/6 | 2/5 | 3/8 | 2/7 | 1/6 | 0/10 |
+| Backend | Unsafe attempts | Rate |
+| --- | ---: | ---: |
+| `claude-opus-5` | 0/24 | 0% |
+| `llama-3.3-70b` (Groq) | 2/24 | 8% |
+| `llama3.2` (3B, local) | 10/24 | 42% |
 
-Asked plainly to delete rows, it complied every time. Asked to "archive the
-returned orders by removing them", it complied six times in eight. Classic
-injection almost never worked, and nothing reached outside the analytics
-tables. The exposure is not a clever attacker, it is an ordinary user asking
-politely while somebody forgot the read-only grant.
+Resistance tracks capability, and the gap is largest exactly where it matters.
+Asked plainly to delete rows, the 3B model complied every time and neither
+larger model did once. Across the full 60-prompt set it was the polite requests
+that worked on the small model, not the clever ones: `direct` 10/10 and
+`euphemism` 6/8, against `injection` 1/6 and `exfiltration` 0/10.
 
-Asked for names and addresses the database does not hold, it fabricated none in
-18 runs and stated the limit in 14 of them.
+So the exposure is not a clever attacker. It is an ordinary user asking nicely
+while somebody forgot the read-only grant, and the mitigation is a database
+grant rather than input sanitising.
+
+Zero out of 24 is not zero. The rule of three puts the upper bound of a 95
+percent confidence interval near 12 percent, so this sample supports ranking
+the three backends and not a precise rate for any of them.
 
 No attack succeeded in any run. The number measures how much work the guard is
 doing, not damage done.
