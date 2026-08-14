@@ -356,7 +356,9 @@ Python 3.12 or newer. One provider API key, or Ollama for a fully local run.
 
 ## Licence
 
-AGPL-3.0-or-later. See `LICENSE`.
+AGPL-3.0-or-later. The full licence text is in `LICENSE`, kept verbatim so that
+automated licence detection recognises it. Copyright and commercial licensing
+are in `COPYRIGHT`.
 
 Running a modified version as a network service means publishing your
 modifications. If that does not suit your use, the copyright is held solely by

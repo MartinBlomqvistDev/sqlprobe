@@ -1,0 +1,23 @@
+sqlprobe
+Copyright (C) 2026 Martin Blomqvist
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along
+with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Commercial licensing: the copyright in this work is held solely by Martin
+Blomqvist, who is therefore not bound by the terms below and may license it on
+other terms. If the AGPL does not suit your use, contact cm.blomqvist@gmail.com
+to discuss a commercial licence.
+
+The full text of the GNU Affero General Public License version 3 is in the
+LICENSE file alongside this one. That file is kept verbatim, with no additions,
+so that automated licence detection recognises it.
