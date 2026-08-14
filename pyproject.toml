@@ -1,12 +1,12 @@
 [project]
-name = "nl2sql-chat"
+name = "sqlprobe"
 version = "0.1.0"
-description = "Natural language to SQL chat agent: multi-provider LLM tool use, SELECT-only guardrails, SSE streaming"
+description = "Measures what an LLM tries to do when given SQL access: adversarial prompts through a real agent, statements graded on the sqlglot AST, nothing executed"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "AGPL-3.0-or-later" }
 authors = [{ name = "Martin Blomqvist", email = "cm.blomqvist@gmail.com" }]
-keywords = ["llm", "sql", "agent", "fastapi", "sse", "text-to-sql"]
+keywords = ["llm", "sql", "agent", "evaluation", "llm-safety", "text-to-sql", "red-teaming"]
 
 dependencies = [
     "fastapi>=0.115",

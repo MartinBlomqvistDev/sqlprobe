@@ -48,8 +48,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(
-    title="nl2sql-chat",
-    description="Natural language to SQL chat agent",
+    title="sqlprobe",
+    description="Natural language to SQL agent, the instrument sqlprobe measures with",
     version=__version__,
     lifespan=lifespan,
 )
